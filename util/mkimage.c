@@ -183,6 +183,21 @@ static const struct grub_install_image_target_desc image_targets[] =
       .default_compression = GRUB_COMPRESSION_LZMA
     },
     {
+      .dirname = "i386-altos",
+      .names = { "i386-altos", NULL },
+      .voidp_sizeof = 4,
+      .bigendian = 0,
+      .id = IMAGE_ALTOS,
+      .flags = PLATFORM_FLAGS_NONE,
+      .total_module_size = TARGET_NO_FIELD,
+      .decompressor_compressed_size = TARGET_NO_FIELD,
+      .decompressor_uncompressed_size = TARGET_NO_FIELD,
+      .decompressor_uncompressed_addr = TARGET_NO_FIELD,
+      .section_align = 1,
+      .vaddr_offset = 0,
+      .link_addr = 0
+    },
+    {
       .dirname = "i386-efi",
       .names = { "i386-efi", NULL },
       .voidp_sizeof = 4,
@@ -1237,6 +1252,7 @@ grub_install_generate_image (const char *dir, const char *prefix,
     case IMAGE_I386_IEEE1275:
     case IMAGE_PPC:
     case IMAGE_UBOOT:
+    case IMAGE_ALTOS:
       break;
     }
 
@@ -1792,6 +1808,7 @@ grub_install_generate_image (const char *dir, const char *prefix,
       }
       break;
     case IMAGE_LOONGSON_ELF:
+    case IMAGE_ALTOS:
     case IMAGE_PPC:
     case IMAGE_XEN:
     case IMAGE_XEN_PVH:

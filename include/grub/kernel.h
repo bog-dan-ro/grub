@@ -72,7 +72,7 @@ struct grub_module_info64
 /* On emu there is no preload space.  */
 /* On ieee1275 our code assumes that heap is p=v which isn't guaranteed for module space.  */
 #if defined (GRUB_MACHINE_QEMU) || defined (GRUB_MACHINE_EMU) \
-  || defined (GRUB_MACHINE_EFI) \
+  || defined (GRUB_MACHINE_EFI) || defined (GRUB_MACHINE_ALTOS) \
   || (defined (GRUB_MACHINE_IEEE1275) && !defined (__sparc__))
 #define GRUB_KERNEL_PRELOAD_SPACE_REUSABLE 0
 #endif

@@ -132,6 +132,7 @@ AC_ARG_WITH([platform],
 # Guess the platform if not specified.
 if test "x$with_platform" = x; then
   case "$target_cpu"-"$target_vendor" in
+    i386-altos) platform=altos ;;
     i386-apple) platform=efi ;;
     i386-*) platform=pc ;;
     x86_64-apple) platform=efi ;;
@@ -174,6 +175,7 @@ case "$target_cpu"-"$platform" in
   i386-xen) ;;
   i386-xen_pvh) ;;
   x86_64-xen) ;;
+  i386-altos) platform=altos ;;
   i386-pc) ;;
   i386-multiboot) ;;
   i386-coreboot) ;;
@@ -248,6 +250,7 @@ case "$platform" in
   ieee1275)	machine_CPPFLAGS="$machine_CPPFLAGS -DGRUB_MACHINE_IEEE1275=1" ;;
   uboot)	machine_CPPFLAGS="$machine_CPPFLAGS -DGRUB_MACHINE_UBOOT=1" ;;
   qemu)		machine_CPPFLAGS="$machine_CPPFLAGS -DGRUB_MACHINE_QEMU=1" ;;
+  altos)	machine_CPPFLAGS="$machine_CPPFLAGS -DGRUB_MACHINE_ALTOS=1" ;;
   pc)		machine_CPPFLAGS="$machine_CPPFLAGS -DGRUB_MACHINE_PCBIOS=1" ;;
   emu)		machine_CPPFLAGS="$machine_CPPFLAGS -DGRUB_MACHINE_EMU=1" ;;
   loongson)	machine_CPPFLAGS="$machine_CPPFLAGS -DGRUB_MACHINE_MIPS_LOONGSON=1" ;;
@@ -2068,6 +2071,7 @@ AM_CONDITIONAL([COND_arm_efi], [test x$target_cpu = xarm -a x$platform = xefi])
 AM_CONDITIONAL([COND_arm64], [test x$target_cpu = xarm64 ])
 AM_CONDITIONAL([COND_arm64_efi], [test x$target_cpu = xarm64 -a x$platform = xefi])
 AM_CONDITIONAL([COND_ia64_efi], [test x$target_cpu = xia64 -a x$platform = xefi])
+AM_CONDITIONAL([COND_i386_altos], [test x$target_cpu = xi386 -a x$platform = xaltos])
 AM_CONDITIONAL([COND_i386_pc], [test x$target_cpu = xi386 -a x$platform = xpc])
 AM_CONDITIONAL([COND_i386_efi], [test x$target_cpu = xi386 -a x$platform = xefi])
 AM_CONDITIONAL([COND_i386_qemu], [test x$target_cpu = xi386 -a x$platform = xqemu])

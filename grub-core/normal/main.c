@@ -326,8 +326,10 @@ grub_cmd_normal (struct grub_command *cmd __attribute__ ((unused)),
       if (prefix)
         {
           grub_size_t config_len;
+#ifndef GRUB_MACHINE_ALTOS
           int disable_net_search = 0;
           const char *net_search_cfg;
+#endif
 
           config_len = grub_strlen (prefix) +
                        sizeof ("/grub.cfg-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX");
@@ -338,13 +340,14 @@ grub_cmd_normal (struct grub_command *cmd __attribute__ ((unused)),
 
           grub_snprintf (config, config_len, "%s/grub.cfg", prefix);
 
+#ifndef GRUB_MACHINE_ALTOS
           net_search_cfg = grub_env_get ("feature_net_search_cfg");
           if (net_search_cfg && net_search_cfg[0] == 'n')
             disable_net_search = 1;
-
           if (grub_strncmp (prefix + 1, "tftp", sizeof ("tftp") - 1) == 0 &&
               !disable_net_search)
             grub_net_search_config_file (config);
+#endif
 
 	  grub_enter_normal_mode (config);
 	  grub_free (config);

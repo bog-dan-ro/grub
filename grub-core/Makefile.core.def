@@ -81,6 +81,20 @@ kernel = {
   riscv64_efi_ldflags      = '-Wl,-r';
   riscv64_efi_stripflags   = '--strip-unneeded -K start -R .note -R .comment -R .note.gnu.gold-version -R .eh_frame';
 
+  i386_altos_cflags           = '-march=i486';
+  i386_altos_ldflags          = '$(TARGET_IMG_LDFLAGS)';
+  i386_altos_ldflags          = '$(TARGET_IMG_BASE_LDOPT),0x0000';
+  i386_altos_ldflags          = '-Wl,-Map=kernel.map';
+  i386_altos_stripflags       = '--strip-unneeded -K start -R .note -R .comment -R .note.gnu.gold-version -R .eh_frame';
+
+  i386_altos_startup = kern/i386/altos/startup.S;
+  i386_altos = kern/i386/altos/init.c;
+  i386_altos = kern/i386/dl.c;
+  i386_altos = term/altos/serial.c;
+  i386_altos = term/altos/console.c;
+  i386_altos = term/serial.c;
+
+
   i386_pc_ldflags          = '$(TARGET_IMG_LDFLAGS)';
   i386_pc_ldflags          = '$(TARGET_IMG_BASE_LDOPT),0x9000';
   i386_qemu_ldflags        = '$(TARGET_IMG_LDFLAGS)';
@@ -858,6 +872,7 @@ module = {
   enable = loongarch64_efi;
   enable = riscv32_efi;
   enable = riscv64_efi;
+  enable = i386_altos;
 };
 
 module = {
@@ -912,6 +927,7 @@ module = {
   common = commands/extcmd.c;
   common = lib/arg.c;
   enable = terminfomodule;
+  enable = i386_altos;
 };
 
 module = {
@@ -945,6 +961,7 @@ module = {
   emu = lib/emu/halt.c;
   uboot = lib/dummy/halt.c;
   arm_coreboot = lib/dummy/halt.c;
+  i386_altos = lib/dummy/halt.c;
 };
 
 module = {
@@ -961,6 +978,7 @@ module = {
   uboot = lib/uboot/reboot.c;
   arm_coreboot = lib/dummy/reboot.c;
   common = commands/reboot.c;
+  i386_altos = lib/dummy/reboot.c;
 };
 
 module = {
@@ -1726,6 +1744,7 @@ module = {
   efi = lib/efi/datetime.c;
   uboot = lib/dummy/datetime.c;
   arm_coreboot = lib/dummy/datetime.c;
+  i386_altos = lib/dummy/datetime.c;
   sparc64_ieee1275 = lib/ieee1275/datetime.c;
   powerpc_ieee1275 = lib/ieee1275/datetime.c;
   sparc64_ieee1275 = lib/ieee1275/cmos.c;
@@ -2073,6 +2092,7 @@ module = {
 module = {
   name = gfxterm_background;
   common = term/gfxterm_background.c;
+  enable = videomodules;
 };
 
 module = {
@@ -2093,6 +2113,7 @@ module = {
 module = {
   name = sendkey;
   i386_pc = commands/i386/pc/sendkey.c;
+
   enable = i386_pc;
 };
 
@@ -2100,6 +2121,7 @@ module = {
   name = terminfo;
   common = term/terminfo.c;
   common = term/tparm.c;
+
   enable = terminfomodule;
 };
 
@@ -2351,16 +2373,19 @@ module = {
   common = net/ethernet.c;
   common = net/arp.c;
   common = net/netbuff.c;
+  enable = x86;
 };
 
 module = {
   name = tftp;
   common = net/tftp.c;
+  enable = net;
 };
 
 module = {
   name = http;
   common = net/http.c;
+  enable = net;
 };
 
 module = {
@@ -2528,6 +2553,7 @@ module = {
 module = {
   name = all_video;
   common = lib/fake_module.c;
+  enable = x86;
 };
 
 module = {

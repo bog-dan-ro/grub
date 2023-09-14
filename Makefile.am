@@ -157,6 +157,11 @@ QEMU32=qemu-system-i386
 MINIMUM_CPU_LINUX=pentium2
 endif
 
+if COND_i386_altos
+QEMU32=qemu-system-i386
+MINIMUM_CPU_LINUX=486
+endif
+
 if COND_i386_multiboot
 QEMU32=qemu-system-i386
 MINIMUM_CPU_LINUX=pentium2

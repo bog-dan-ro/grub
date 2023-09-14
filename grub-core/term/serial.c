@@ -154,7 +154,7 @@ grub_serial_find (const char *name)
     if (grub_strcmp (port->name, name) == 0)
       return port;
 
-#if (defined(__mips__) || defined (__i386__) || defined (__x86_64__)) && !defined(GRUB_MACHINE_EMU) && !defined(GRUB_MACHINE_ARC)
+#if (defined(__mips__) || defined (__i386__) || defined (__x86_64__)) && !defined(GRUB_MACHINE_EMU) && !defined(GRUB_MACHINE_ARC) && !defined(GRUB_MACHINE_ALTOS)
   if (grub_strncmp (name, "port", sizeof ("port") - 1) == 0
       && grub_isxdigit (name [sizeof ("port") - 1]))
     {
@@ -210,7 +210,7 @@ grub_serial_find (const char *name)
         return port;
     }
 
-#if (defined(__i386__) || defined(__x86_64__)) && !defined(GRUB_MACHINE_IEEE1275) && !defined(GRUB_MACHINE_QEMU)
+#if (defined(__i386__) || defined(__x86_64__)) && !defined(GRUB_MACHINE_IEEE1275) && !defined(GRUB_MACHINE_QEMU) && !defined(GRUB_MACHINE_ALTOS)
   if (grub_strcmp (name, "auto") == 0)
     {
       /* Look for an SPCR if any. If not, default to com0. */
@@ -344,7 +344,7 @@ grub_cmd_serial (grub_extcmd_context_t ctxt, int argc, char **args)
   err = port->driver->configure (port, &config);
   if (err)
     return err;
-#if !defined (GRUB_MACHINE_EMU) && !defined(GRUB_MACHINE_ARC) && (defined(__mips__) || defined (__i386__) || defined (__x86_64__))
+#if !defined (GRUB_MACHINE_EMU) && !defined(GRUB_MACHINE_ARC) && (defined(__mips__) || defined (__i386__) && !defined(GRUB_MACHINE_ALTOS) || defined (__x86_64__))
 
   /* Compatibility kludge.  */
   if (port->driver == &grub_ns8250_driver)
@@ -494,19 +494,20 @@ GRUB_MOD_INIT(serial)
 	       &grub_serial_terminfo_input_template,
 	       sizeof (grub_serial_terminfo_input));
 
-#if !defined (GRUB_MACHINE_EMU) && !defined(GRUB_MACHINE_ARC) && (defined(__mips__) || defined (__i386__) || defined (__x86_64__))
+#if !defined (GRUB_MACHINE_EMU) && !defined(GRUB_MACHINE_ALTOS) && !defined(GRUB_MACHINE_ARC) && (defined(__mips__) || defined (__i386__) || defined (__x86_64__))
   grub_ns8250_init ();
 #endif
 #ifdef GRUB_MACHINE_IEEE1275
   grub_ofserial_init ();
 #endif
+
 #ifdef GRUB_MACHINE_EFI
   grub_efiserial_init ();
 #endif
 #ifdef GRUB_MACHINE_ARC
   grub_arcserial_init ();
 #endif
-#if defined(__i386__) || defined(__x86_64__)
+#if defined(__i386__) && !defined(GRUB_MACHINE_ALTOS) || defined(__x86_64__)
   grub_pciserial_init ();
 #endif
 }
